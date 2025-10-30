@@ -67,7 +67,6 @@ fi
 
 if [ "true" = "$multiplatform" ]; then
   platforms=(
-    darwin/amd64
     darwin/arm64
     linux/amd64
     windows/amd64

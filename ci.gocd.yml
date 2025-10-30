@@ -23,7 +23,6 @@ pipelines:
                 set -eux
                 ./build.sh --verbose --prod
                 echo "Collating binaries..."
-                sha256sum dist/darwin/amd64/run-gocd
                 sha256sum dist/darwin/arm64/run-gocd
                 sha256sum dist/linux/amd64/run-gocd
                 sha256sum dist/windows/amd64/run-gocd.exe
@@ -67,7 +66,7 @@ pipelines:
                 cd assembly/config
                 bundle
                 bundle exec rake
-            - script: ./assembly/package.sh osx osx-aarch64 linux windows
+            - script: ./assembly/package.sh osx-aarch64 linux windows
           artifacts:
             - build:
                 source: installers/*

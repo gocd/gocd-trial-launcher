@@ -132,9 +132,6 @@ function prepare_launcher {
   echo "  * Bundling run-gocd launcher..."
 
   case "$plt" in
-    osx)
-      local src="dist/darwin/amd64/run-gocd"
-      ;;
     osx-aarch64)
       local src="dist/darwin/arm64/run-gocd"
       ;;
