@@ -83,13 +83,17 @@ func Unzip(src string, dest string) error {
 		return err
 	}
 
-	defer r.Close()
+	defer func(r *zip.ReadCloser) {
+		_ = r.Close()
+	}(r)
 
 	for _, f := range r.File {
 		fpath := filepath.Join(dest, f.Name)
 
 		if f.FileInfo().IsDir() {
-			os.MkdirAll(fpath, os.ModePerm)
+			if err = os.MkdirAll(fpath, os.ModePerm); err != nil {
+				return err
+			}
 			continue
 		}
 
@@ -109,8 +113,8 @@ func Unzip(src string, dest string) error {
 
 		_, err = io.Copy(outFile, rc)
 
-		outFile.Close()
-		rc.Close()
+		_ = outFile.Close()
+		_ = rc.Close()
 
 		if err != nil {
 			return err

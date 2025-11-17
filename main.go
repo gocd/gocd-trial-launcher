@@ -28,7 +28,7 @@ func main() {
 	}
 
 	if *ansFlg {
-		utils.Die(0, ANSI_TEST)
+		utils.Die(0, AnsiTest)
 	}
 
 	trap.Trap(cleanup, os.Interrupt, syscall.SIGTERM, syscall.SIGHUP)
@@ -38,7 +38,7 @@ func main() {
 	}
 
 	utils.Debug(`Setting JAVA_HOME: %q`, javaHome)
-	os.Setenv(`JAVA_HOME`, javaHome)
+	_ = os.Setenv(`JAVA_HOME`, javaHome)
 
 	if err := java.Verify(); err != nil {
 		utils.Err("Error executing java binary at [%s].\nIt might be incompatible with your OS.\n\n  Cause: %v\n", java.Executable(), err)

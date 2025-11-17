@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	colorable "github.com/mattn/go-colorable"
+	"github.com/mattn/go-colorable"
 )
 
 func Debug(f string, t ...interface{}) {
@@ -15,21 +15,21 @@ func Debug(f string, t ...interface{}) {
 
 func Out(f string, t ...interface{}) {
 	if len(t) > 0 {
-		fmt.Fprintf(colorable.NewColorableStdout(), f+"\n", t...)
+		_, _ = fmt.Fprintf(colorable.NewColorableStdout(), f+"\n", t...)
 	} else {
-		fmt.Fprint(colorable.NewColorableStdout(), f+"\n")
+		_, _ = fmt.Fprint(colorable.NewColorableStdout(), f+"\n")
 	}
 }
 
 func Err(f string, t ...interface{}) {
 	if len(t) > 0 {
-		fmt.Fprintf(colorable.NewColorableStderr(), f+"\n", t...)
+		_, _ = fmt.Fprintf(colorable.NewColorableStderr(), f+"\n", t...)
 	} else {
-		fmt.Fprint(colorable.NewColorableStderr(), f+"\n")
+		_, _ = fmt.Fprint(colorable.NewColorableStderr(), f+"\n")
 	}
 }
 
-// Exits with exitCode after printing message.
+// Die Exits with exitCode after printing message.
 // Automatically selects STDOUT vs STDERR depending
 // on value of exitCode
 func Die(exitCode int, f string, t ...interface{}) {

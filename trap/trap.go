@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	sigs chan os.Signal = make(chan os.Signal, 1)
+	sigs = make(chan os.Signal, 1)
 )
 
 func Trap(hook func(), signals ...os.Signal) {

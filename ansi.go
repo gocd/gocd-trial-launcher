@@ -3,7 +3,7 @@ package main
 // generated using:
 // bash -c "$(curl -fsSL https://gist.githubusercontent.com/ketan/2866a236596636311d64/raw/ansi-color-test.sh)"
 
-const ANSI_TEST = `
+const AnsiTest = `
 [01;32mHELLO^[[00m
 --bold [1mSample[22m[40G--faint [2mSample[22m
 --italic [3mSample[23m[40G--fraktur [20mSample[23m

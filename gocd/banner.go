@@ -4,7 +4,7 @@ import (
 	"github.com/gocd/gocd-trial-launcher/utils"
 )
 
-const LOGO_TEXT = `
+const LogoText = `
 
     @@@
   @@@@@@@@
@@ -29,5 +29,5 @@ const LOGO_TEXT = `
 `
 
 func PrintLogo() {
-	utils.Out(LOGO_TEXT)
+	utils.Out(LogoText)
 }

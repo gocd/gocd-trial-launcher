@@ -14,7 +14,9 @@ func TryConnect(host string, port int) bool {
 	dest := host + `:` + strconv.Itoa(port)
 	Debug(`Attempting connection to %s`, dest)
 	if c, err := net.Dial("tcp", dest); err == nil {
-		defer c.Close()
+		defer func(c net.Conn) {
+			_ = c.Close()
+		}(c)
 		Debug(`  Success.`)
 		return true
 	} else {
@@ -65,9 +67,9 @@ func client() *http.Client {
 	if webcl == nil {
 		return &http.Client{
 			Transport: &http.Transport{
-				Dial: (&net.Dialer{
+				DialContext: (&net.Dialer{
 					Timeout: 30 * time.Second,
-				}).Dial,
+				}).DialContext,
 				TLSHandshakeTimeout: 5 * time.Second,
 			},
 			CheckRedirect: func(req *http.Request, via []*http.Request) error {

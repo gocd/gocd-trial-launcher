@@ -8,21 +8,23 @@ import (
 )
 
 var (
-	baseDir    string = utils.BaseDir()
-	packageDir string = filepath.Join(baseDir, `packages`)
-	dataDir    string = filepath.Join(baseDir, `data`)
-	servPkgDir string = filepath.Join(packageDir, `go-server`)
-	agntPkgDir string = filepath.Join(packageDir, `go-agent`)
+	baseDir    = utils.BaseDir()
+	packageDir = filepath.Join(baseDir, `packages`)
+	dataDir    = filepath.Join(baseDir, `data`)
+	servPkgDir = filepath.Join(packageDir, `go-server`)
+	agntPkgDir = filepath.Join(packageDir, `go-agent`)
 
-	configZip string = filepath.Join(packageDir, `cfg.zip`)
+	configZip = filepath.Join(packageDir, `cfg.zip`)
 
-	javaHome string      = filepath.Join(packageDir, `jre`)
-	java     *utils.Java = utils.NewJava(javaHome)
+	javaHome = filepath.Join(packageDir, `jre`)
+	java     = utils.NewJava(javaHome)
 
-	serverWd string = filepath.Join(dataDir, `server`)
-	agentWd  string = filepath.Join(dataDir, `agent`)
+	serverWd = filepath.Join(dataDir, `server`)
+	agentWd  = filepath.Join(dataDir, `agent`)
+)
 
-	// These should be set by the linker at build time
+// These should be set by the linker at build time
+var (
 	Version   = `devbuild`
 	GitCommit = `unknown`
 	Platform  = `devbuild`
