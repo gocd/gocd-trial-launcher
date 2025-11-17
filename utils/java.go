@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"io/ioutil"
+	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -10,9 +10,10 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var EnableDebug bool = false
+var EnableDebug = false
 
 type JavaProps map[string]string
+type EnvVars map[string]string
 
 func (j *JavaProps) Args() []string {
 	args := make([]string, 0)
@@ -22,7 +23,7 @@ func (j *JavaProps) Args() []string {
 	return args
 }
 
-// Builds a `java` command invocation with a specific JAVA_HOME
+// Java Builds a `java` command invocation with a specific JAVA_HOME
 type Java struct {
 	Home       string
 	executable string
@@ -34,7 +35,7 @@ func PropsFromYaml(yamlFile string) (JavaProps, error) {
 		dcr.SetStrict(true)
 		m := make(map[string]string)
 		if err = dcr.Decode(&m); err == nil {
-			return JavaProps(m), nil
+			return m, nil
 		} else {
 			return nil, err
 		}
@@ -43,13 +44,20 @@ func PropsFromYaml(yamlFile string) (JavaProps, error) {
 	}
 }
 
-func (j *Java) Build(properties JavaProps, args ...string) *exec.Cmd {
+func (j *Java) Build(properties JavaProps, additionalEnv EnvVars, args ...string) *exec.Cmd {
 	if len(properties) > 0 {
 		args = append(properties.Args(), args...)
 	}
 
 	cmd := exec.Command(j.executable, args...)
 	cmd.Env = os.Environ() // inherit env
+
+	if len(additionalEnv) > 0 {
+		for k, v := range additionalEnv {
+			cmd.Env = append(cmd.Env, k+"="+v)
+			Debug(`Using %s: %q`, k, v)
+		}
+	}
 
 	if os.Getenv(`JAVA_HOME`) != j.Home { // ensure JAVA_HOME uses the configured Home
 		cmd.Env = append(cmd.Env, `JAVA_HOME=`+j.Home)
@@ -62,14 +70,14 @@ func (j *Java) Build(properties JavaProps, args ...string) *exec.Cmd {
 }
 
 func (j *Java) Verify() error {
-	cmd := j.Build(nil, `-version`)
+	cmd := j.Build(nil, nil, `-version`)
 
 	if EnableDebug {
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 	} else {
-		cmd.Stdout = ioutil.Discard
-		cmd.Stderr = ioutil.Discard
+		cmd.Stdout = io.Discard
+		cmd.Stderr = io.Discard
 	}
 
 	return cmd.Run()

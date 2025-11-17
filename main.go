@@ -44,8 +44,8 @@ func main() {
 		utils.Err("Error executing java binary at [%s].\nIt might be incompatible with your OS.\n\n  Cause: %v\n", java.Executable(), err)
 	}
 
-	if utils.TryConnect(gocd.BIND_HOST, gocd.HTTP_PORT) {
-		utils.Die(1, `Port %d must be free to run this test drive.`, gocd.HTTP_PORT)
+	if utils.TryConnect(gocd.BindHost, gocd.HttpPort) {
+		utils.Die(1, `Port %d must be free to run this test drive.`, gocd.HttpPort)
 	}
 
 	if *rstFlg {
@@ -76,19 +76,19 @@ func main() {
 		cleanup()
 	}
 
-	utils.WaitUntilPortAttached(gocd.HTTP_PORT, `Waiting for GoCD to bootstrap`)
+	utils.WaitUntilPortAttached(gocd.HttpPort, `Waiting for GoCD to bootstrap`)
 
 	utils.Out("\n")
 	utils.Out("Server log directory: %q", filepath.Join(serverWd, `logs`))
 	utils.Out("Agent log directory:  %q", filepath.Join(agentWd, `logs`))
 	utils.Out("All data written to:  %q", dataDir)
 
-	utils.OpenUrlInBrowser(gocd.WEB_URL)
+	utils.OpenUrlInBrowser(gocd.WebUrl)
 
 	utils.Out("")
-	utils.WaitUntilResponseSuccess(gocd.WEB_URL, `Wating for the GoCD server to finish initializing`)
+	utils.WaitUntilResponseSuccess(gocd.WebUrl, `Wating for the GoCD server to finish initializing`)
 	utils.Out("\nThe GoCD Server has started")
-	agentCmd, err = gocd.StartAgent(java, agentWd, filepath.Join(agntPkgDir, "agent-bootstrapper.jar"))
+	agentCmd, err = gocd.StartAgentBootstrapper(java, agentWd, filepath.Join(agntPkgDir, "agent-bootstrapper.jar"))
 
 	if err != nil {
 		utils.Err("Could not start the GoCD agent.\n  Cause: %v", err)
