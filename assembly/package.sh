@@ -4,7 +4,7 @@ set -euo pipefail
 DEFAULT_GOCD_JRE_FEATURE=25
 # Function to fetch the latest temurin-25 JRE version and extract version string
 function get_latest_default_jre_version {
-  mise ls-remote "java@temurin-$DEFAULT_GOCD_JRE_FEATURE" | tail -n 1 | sed 's/^temurin-//' | sed 's/\..+\.LTS$//'
+  mise ls-remote "java@temurin-$DEFAULT_GOCD_JRE_FEATURE" | tail -n 1 | sed 's/^temurin-//' | sed 's/\..\.LTS$//'
 }
 
 GOCD_JRE_VERSION="${GOCD_JRE_VERSION:-$(get_latest_default_jre_version)}"
