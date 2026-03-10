@@ -1,8 +1,13 @@
-#!/bin/bash
+#!/bin/env bash
+set -euo pipefail
 
-set -e
+DEFAULT_GOCD_JRE_FEATURE=25
+# Function to fetch the latest temurin-25 JRE version and extract version string
+function get_latest_default_jre_version {
+  mise ls-remote "java@temurin-$DEFAULT_GOCD_JRE_FEATURE" | tail -n 1 | sed 's/^temurin-//' | sed 's/\..+\.LTS$//'
+}
 
-GOCD_JRE_VERSION="${GOCD_JRE_VERSION:-25.0.2+10}"
+GOCD_JRE_VERSION="${GOCD_JRE_VERSION:-$(get_latest_default_jre_version)}"
 IFS='.' read -ra GOCD_JRE_VERSION_PARTS <<< "$GOCD_JRE_VERSION"
 GOCD_JRE_FEATURE=${GOCD_JRE_VERSION_PARTS[0]}
 
@@ -262,14 +267,13 @@ function die {
 }
 
 function jre_pkg_name {
-  local update_modifier=$(if [ ${#GOCD_JRE_VERSION_PARTS[@]} ]; then  echo "U"; else echo ""; fi)
   local jre_version_filesafe=$(echo "${GOCD_JRE_VERSION}" | tr "+" "_")
 
   local os=$(if [[ "$1" == osx* ]]; then echo "mac"; else echo "$1"; fi)
   local arch=$(if [[ "$1" == *aarch64 ]]; then echo "aarch64"; else echo "x64"; fi)
   local ext=$(if [[ "$1" == windows* ]]; then echo ".zip"; else echo ".tar.gz"; fi)
 
-  echo "OpenJDK${GOCD_JRE_FEATURE}${update_modifier}-jre_${arch}_${os}_hotspot_${jre_version_filesafe}${ext}"
+  echo "OpenJDK${GOCD_JRE_FEATURE}U-jre_${arch}_${os}_hotspot_${jre_version_filesafe}${ext}"
 }
 
 # Unpacks an archive to a specified directory; smart enough to unpack both
