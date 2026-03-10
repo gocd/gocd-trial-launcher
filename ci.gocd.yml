@@ -17,7 +17,7 @@ pipelines:
       RELEASE: 1.0.0
     stages:
       - build:
-          elastic_profile_id: ecs-golang-build
+          elastic_profile_id: ecs-gocd-dev-build
           tasks:
             - script: |
                 set -eux
