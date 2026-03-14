@@ -15,6 +15,9 @@ pipelines:
         git: https://git.gocd.io/git/gocd/gocd-trial-launcher
     environment_variables:
       RELEASE: 1.0.0
+    timer:
+      spec: 0 30 22 ? * FRI
+      only_on_changes: false
     stages:
       - build:
           elastic_profile_id: ecs-gocd-dev-build
