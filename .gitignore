@@ -8,3 +8,4 @@ data/
 deps/
 dist/
 installers/
+**/.bundle/ruby/
