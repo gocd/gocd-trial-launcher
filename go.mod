@@ -1,6 +1,6 @@
 module github.com/gocd/gocd-trial-launcher
 
-go 1.26.0
+go 1.26
 
 require (
 	github.com/mattn/go-colorable v0.1.15
