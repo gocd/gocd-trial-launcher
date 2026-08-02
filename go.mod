@@ -8,6 +8,6 @@ require (
 )
 
 require (
-	github.com/mattn/go-isatty v0.0.22 // indirect
+	github.com/mattn/go-isatty v0.0.24 // indirect
 	golang.org/x/sys v0.47.0 // indirect
 )
