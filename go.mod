@@ -3,7 +3,7 @@ module github.com/gocd/gocd-trial-launcher
 go 1.27
 
 require (
-	github.com/mattn/go-colorable v0.1.15
+	github.com/mattn/go-colorable v0.1.16
 	gopkg.in/yaml.v2 v2.4.0
 )
 
