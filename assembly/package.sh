@@ -9,7 +9,7 @@ function get_latest_default_jre_version {
   # regular 1-2 digit builds such as temurin-25.0.4+7.0.LTS -> 25.0.4+7 alone.
   MISE_MINIMUM_RELEASE_AGE=0 mise ls-remote "java@temurin-$DEFAULT_GOCD_JRE_FEATURE" | \
     tail -n 1 | \
-    sed -E -e 's/^temurin-//' -e 's/\.[0-9]\.LTS$//' -e 's/\+([0-9])([0-9]{2})$/.\1+\2/' -e 's/\+0([0-9])$/+\1/'
+    sed -E -e 's/^temurin-//' -e 's/\.[0-9]\.LTS$//' -e 's/\+([0-9])([0-9]{1,})([0-9])$/.\1+\3/' -e 's/\+0([0-9])$/+\1/'
 }
 
 GOCD_JRE_VERSION="${GOCD_JRE_VERSION:-$(get_latest_default_jre_version)}"
