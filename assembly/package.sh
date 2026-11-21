@@ -4,17 +4,13 @@ set -euo pipefail
 DEFAULT_GOCD_JRE_FEATURE=25
 # Function to fetch the latest temurin-25 JRE version and extract version string
 function get_latest_default_jre_version {
-  # Temurin encodes 4-component versions with a 3-digit build (patch*100+build),
-  # e.g temurin-25.0.4+101.0.LTS is really 25.0.4.1+1; unpack those, leaving
-  # regular 1-2 digit builds such as temurin-25.0.4+7.0.LTS -> 25.0.4+7 alone.
   MISE_MINIMUM_RELEASE_AGE=0 mise ls-remote "java@temurin-$DEFAULT_GOCD_JRE_FEATURE" | \
     tail -n 1 | \
-    sed -E -e 's/^temurin-//' -e 's/\.[0-9]\.LTS$//'
+    sed -E -e 's/^temurin-//' -e 's/\.[0-9]\.LTS$//' -e 's/(\.0)+\+/+/'
 }
 
 GOCD_JRE_VERSION="${GOCD_JRE_VERSION:-$(get_latest_default_jre_version)}"
-IFS='.' read -ra GOCD_JRE_VERSION_PARTS <<< "$GOCD_JRE_VERSION"
-GOCD_JRE_FEATURE=${GOCD_JRE_VERSION_PARTS[0]}
+GOCD_JRE_FEATURE=${GOCD_JRE_VERSION%%[.+]*}
 
 SCRATCH_DIR="scratch"
 INSTALLERS_DIR="installers"
